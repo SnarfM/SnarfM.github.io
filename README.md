@@ -1,2 +1,2 @@
-# .github.io
+# HTML
 Hosting my HTML Projects
