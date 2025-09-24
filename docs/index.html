@@ -1,11 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Website</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My D&D Projects</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+
+  body {
+    margin: 0;
+    background: #f3e6c9;
+    font-family: 'MedievalSharp', cursive;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    color: #4b2e05;
+  }
+
+  h1 {
+    margin: 2rem 0 1rem;
+  }
+
+  .grid {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 900px;
+    width: 90%;
+  }
+
+  .panel {
+    background: #f9f4e8;
+    border: 3px solid #7a562c;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 220px;
+    height: 150px;
+    box-shadow: 0 0 12px #a67c00cc;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .panel:hover {
+    background-color: #e6d8b7;
+  }
+
+  .panel h2 {
+    margin: 0 0 0.5rem;
+  }
+
+  .panel p {
+    font-style: italic;
+  }
+</style>
 </head>
 <body>
-  <h1>Hello World 👋</h1>
-  <p>This is my first GitHub Pages site.</p>
+
+<h1>Welcome to My D&D Projects</h1>
+
+<div class="grid">
+  <div class="panel" onclick="location.href='d20dice.html'">
+    <h2>🎲 D20 Dice Roller</h2>
+    <p>Roll your fate with a click!</p>
+  </div>
+  <div class="panel" onclick="location.href='project2.html'">
+    <h2>🗺️ World Map</h2>
+    <p>Explore the fantasy realm (coming soon)</p>
+  </div>
+  <div class="panel" onclick="location.href='project3.html'">
+    <h2>📜 Lore Archives</h2>
+    <p>Discover ancient secrets (coming soon)</p>
+  </div>
+</div>
+
+<footer style="margin-top:auto; padding:1rem; font-size:0.8rem; color:#7a562c;">
+  Made with ⚔️ &amp; 🐉 by SnarfM/TransformingPanda
+</footer>
+
 </body>
 </html>
