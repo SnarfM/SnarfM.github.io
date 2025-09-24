@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Eye Tracking Test</title>
+  <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+</head>
+<body>
+  <h1>Eye Tracker Test</h1>
+  <p>Look around the screen and WebGazer will estimate your gaze.</p>
+
+  <canvas id="heatmap" width="800" height="600" 
+          style="border:1px solid black;"></canvas>
+
+  <script>
+    // Start WebGazer
+    webgazer.setRegression('ridge')        // use ridge regression
+            .setTracker('clmtrackr')       // use clmtrackr for face tracking
+            .begin();
+
+    // Optional: show video feedback while calibrating
+    webgazer.showVideoPreview(true) 
+            .showPredictionPoints(true); 
+
+    // Log gaze data & draw to canvas
+    const canvas = document.getElementById('heatmap');
+    const ctx = canvas.getContext('2d');
+
+    webgazer.setGazeListener(function(data, elapsedTime) {
+      if (data == null) return;
+      let x = data.x; // gaze x
+      let y = data.y; // gaze y
+
+      // Draw a red dot for gaze point
+      ctx.fillStyle = "rgba(255,0,0,0.5)";
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Optionally send data to server
+      /*
+      fetch("/log_gaze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ x, y, elapsedTime })
+      });
+      */
+    });
+  </script>
+</body>
+</html>
