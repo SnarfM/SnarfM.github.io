@@ -22,10 +22,18 @@
       z-index: 1;
     }
     #overlay {
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 2;
       color: #000;
-      padding: 1em;
+      padding: 1em 2em;
+      text-align: center;
+      background: rgba(255,255,255,0.8);
+      border-bottom-left-radius: 1em;
+      border-bottom-right-radius: 1em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
   </style>
 </head>
@@ -58,7 +66,7 @@
     webgazer.showVideoPreview(true) 
             .showPredictionPoints(true); 
 
-    // Log gaze data & draw to canvas
+    // Log gaze data & draw to canvas (only gaze, not mouse)
     webgazer.setGazeListener(function(data, elapsedTime) {
       if (data == null) return;
       let x = data.x; // gaze x
@@ -79,6 +87,8 @@
       });
       */
     });
+
+    // Remove any mouse event listeners that would draw dots (none present in this code)
   </script>
 </body>
 </html>
