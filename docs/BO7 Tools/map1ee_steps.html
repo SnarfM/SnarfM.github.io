@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Step Checklist</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f8f9fa;
-            margin: 0;
-            padding: 2em;
-            color: #222;
-        }
-        .container {
-            max-width: 500px;
-            margin: 3em auto;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            padding: 2em 1.5em;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Map Checklist</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+
+  body {
+    margin: 0;
+    background: #f3e6c9;
+    font-family: 'MedievalSharp', cursive;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    color: #4b2e05;
+  }
+
+  h1 {
+    margin: 2rem 0 1rem;
+  }
+
+.container {
+            background: #f9f4e8;
+    border: 3px solid #7a562c;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 220px;
+    height: 150px;
+    box-shadow: 0 0 12px #a67c00cc;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    transition: background-color 0.3s ease;
         }
         .step-list {
             display: flex;
@@ -63,9 +81,13 @@
             background: #b0bec5;
             cursor: not-allowed;
         }
-    </style>
+
+</style>
 </head>
 <body>
+
+<a href="index.html" style="display:inline-block; margin:1rem; font-family: 'MedievalSharp', cursive; color:#4b2e05; text-decoration:none;">⬅ Back to Home</a>
+
     <div class="container">
         <h2>Checklist Steps</h2>
         <div class="step-list" id="stepList">
@@ -130,5 +152,13 @@
 
         renderSteps();
     </script>
+
+
+<footer style="margin-top:auto; padding:1rem; font-size:0.8rem; color:#7a562c;">
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi', '#72a4f2', 'X8X818RDQ3');kofiwidget2.draw();</script> 
+
+  Made with ⚔️ &amp; 🐉 by SnarfM TransformingPanda
+</footer>
+
 </body>
 </html>
