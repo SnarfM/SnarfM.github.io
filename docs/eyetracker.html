@@ -3,15 +3,52 @@
 <head>
   <title>Eye Tracking Test</title>
   <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+    #heatmap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      border: 1px solid black;
+      z-index: 1;
+    }
+    #overlay {
+      position: relative;
+      z-index: 2;
+      color: #000;
+      padding: 1em;
+    }
+  </style>
 </head>
 <body>
-  <h1>Eye Tracker Test</h1>
-  <p>Look around the screen and WebGazer will estimate your gaze.</p>
 
-  <canvas id="heatmap" width="800" height="600" 
-          style="border:1px solid black;"></canvas>
+  <div id="overlay">
+    <h1>Eye Tracker Test</h1>
+    <p>Look around the screen and WebGazer will estimate your gaze.</p>
+  </div>
+  <canvas id="heatmap"></canvas>
 
   <script>
+    // Resize canvas to fill window
+    const canvas = document.getElementById('heatmap');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
     // Start WebGazer
     webgazer.setRegression('ridge')        // use ridge regression
             .setTracker('clmtrackr')       // use clmtrackr for face tracking
@@ -22,9 +59,6 @@
             .showPredictionPoints(true); 
 
     // Log gaze data & draw to canvas
-    const canvas = document.getElementById('heatmap');
-    const ctx = canvas.getContext('2d');
-
     webgazer.setGazeListener(function(data, elapsedTime) {
       if (data == null) return;
       let x = data.x; // gaze x
