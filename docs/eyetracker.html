@@ -18,7 +18,6 @@
       width: 100vw;
       height: 100vh;
       display: block;
-      border: 1px solid black;
       z-index: 1;
     }
     #overlay {
@@ -26,7 +25,7 @@
       top: 0;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 2;
+      z-index: 2; /* lowered so calibration dots stay clickable */
       color: #000;
       padding: 1em 2em;
       text-align: center;
@@ -34,6 +33,38 @@
       border-bottom-left-radius: 1em;
       border-bottom-right-radius: 1em;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      pointer-events: none; /* allow clicks to pass through */
+    }
+    #calibration {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+    }
+    .calibration-dot {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: red;
+      cursor: pointer;
+    }
+    #finishButton {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.5em 1.5em;
+      font-size: 1em;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 4;
+      display: none;
     }
   </style>
 </head>
@@ -41,12 +72,14 @@
 
   <div id="overlay">
     <h1>Eye Tracker Test</h1>
-    <p>Look around the screen and WebGazer will estimate your gaze.</p>
+    <p>Click each red dot to calibrate. Then press “Finish Calibration.”</p>
   </div>
+
+  <div id="calibration"></div>
+  <button id="finishButton">Finish Calibration</button>
   <canvas id="heatmap"></canvas>
 
   <script>
-    // Resize canvas to fill window
     const canvas = document.getElementById('heatmap');
     const ctx = canvas.getContext('2d');
 
@@ -58,37 +91,74 @@
     resizeCanvas();
 
     // Start WebGazer
-    webgazer.setRegression('ridge')        // use ridge regression
-            .setTracker('clmtrackr')       // use clmtrackr for face tracking
+    webgazer.setRegression('ridge')
+            .setTracker('clmtrackr')
             .begin();
 
-    // Optional: show video feedback while calibrating
-    webgazer.showVideoPreview(true) 
-            .showPredictionPoints(true); 
+    // Optional: show video feedback during calibration
+    webgazer.showVideoPreview(true)
+            .showPredictionPoints(true);
 
-    // Log gaze data & draw to canvas (only gaze, not mouse)
-    webgazer.setGazeListener(function(data, elapsedTime) {
-      if (data == null) return;
-      let x = data.x; // gaze x
-      let y = data.y; // gaze y
+    // === Calibration logic ===
+    const calibrationPoints = [
+      [0.1, 0.1], [0.5, 0.1], [0.9, 0.1],
+      [0.1, 0.5], [0.5, 0.5], [0.9, 0.5],
+      [0.1, 0.9], [0.5, 0.9], [0.9, 0.9]
+    ];
+    const calibrationDiv = document.getElementById("calibration");
+    const finishButton = document.getElementById("finishButton");
+    let clickedCount = 0;
 
-      // Draw a red dot for gaze point
-      ctx.fillStyle = "rgba(255,0,0,0.5)";
-      ctx.beginPath();
-      ctx.arc(x, y, 5, 0, 2 * Math.PI);
-      ctx.fill();
+    calibrationPoints.forEach(([px, py]) => {
+      const dot = document.createElement("div");
+      dot.className = "calibration-dot";
+      dot.style.left = (px * window.innerWidth - 10) + "px";
+      dot.style.top = (py * window.innerHeight - 10) + "px";
 
-      // Optionally send data to server
-      /*
-      fetch("/log_gaze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ x, y, elapsedTime })
+      dot.addEventListener("click", () => {
+        webgazer.recordScreenPosition(
+          dot.offsetLeft + 10,
+          dot.offsetTop + 10,
+          "click"
+        );
+        dot.style.background = "green"; // mark clicked
+        clickedCount++;
+        if (clickedCount === calibrationPoints.length) {
+          finishButton.style.display = "block";
+        }
       });
-      */
+
+      calibrationDiv.appendChild(dot);
     });
 
-    // Remove any mouse event listeners that would draw dots (none present in this code)
+    finishButton.addEventListener("click", () => {
+      calibrationDiv.style.display = "none";
+      finishButton.style.display = "none";
+      document.getElementById("overlay").innerHTML =
+        "<h1>Calibration Complete 🎉</h1><p>Now look around!</p>";
+
+      // === Heatmap rendering ===
+      webgazer.setGazeListener(function(data, elapsedTime) {
+        if (data == null) return;
+        let x = data.x;
+        let y = data.y;
+
+        // Draw blurred dot for heatmap
+        let radius = 40;
+        let gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        gradient.addColorStop(0, "rgba(255,0,0,0.4)");
+        gradient.addColorStop(1, "rgba(255,0,0,0)");
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+      });
+
+      // Slowly fade out old points to keep it dynamic
+      setInterval(() => {
+        ctx.fillStyle = "rgba(255,255,255,0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }, 100);
+    });
   </script>
 </body>
 </html>
