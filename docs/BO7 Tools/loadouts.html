@@ -329,20 +329,7 @@
         desc.className = 'desc';
         desc.textContent = ld.description;
         details.appendChild(desc);
-      }
-
-      // controls (optional)
-      const ctrls = document.createElement('div');
-      ctrls.className = 'controls';
-      const edit = document.createElement('button');
-      edit.className = 'small-btn';
-      edit.textContent = 'Edit';
-      edit.addEventListener('click',(e)=>{
-        e.stopPropagation();
-        alert('Edit function not implemented here — edit loadouts in the script array.');
-      });
-      ctrls.appendChild(edit);
-      details.appendChild(ctrls);
+      }      
 
       // attach behavior
       btn.addEventListener('click', (ev)=>{
