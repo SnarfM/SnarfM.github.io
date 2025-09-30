@@ -20,43 +20,50 @@
 
   h1 {
     margin: 2rem 0 1rem;
-  }
-
-  .grid {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 900px;
-    width: 90%;
-  }
-
-  .panel {
-    background: #f9f4e8;
-    border: 3px solid #7a562c;
-    border-radius: 12px;
-    padding: 2rem;
-    width: 220px;
-    height: 150px;
-    box-shadow: 0 0 12px #a67c00cc;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     text-align: center;
-    transition: background-color 0.3s ease;
   }
 
-  .panel:hover {
-    background-color: #e6d8b7;
+  .accordion {
+    width: 90%;
+    max-width: 600px;
+    margin: 1rem auto;
+    border: 3px solid #7a562c;
+    border-radius: 10px;
+    background: #f9f4e8;
+    box-shadow: 0 0 12px #a67c00cc;
+    overflow: hidden;
   }
 
-  .panel h2 {
-    margin: 0 0 0.5rem;
+  .accordion-header {
+    padding: 1rem;
+    background: #e6d8b7;
+    cursor: pointer;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #7a562c;
   }
 
-  .panel p {
-    font-style: italic;
+  .accordion-header:hover {
+    background: #d9c894;
+  }
+
+  .accordion-content {
+    display: none;
+    flex-direction: column;
+  }
+
+  .accordion-content a {
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    color: #4b2e05;
+    border-top: 1px solid #ccc;
+  }
+
+  .accordion-content a:hover {
+    background: #f3e6c9;
+  }
+
+  .kofi-container {
+    margin-top: 3rem;
   }
 </style>
 </head>
@@ -66,34 +73,53 @@
 
 <a href="index.html" style="display:inline-block; margin:1rem; font-family: 'MedievalSharp', cursive; color:#4b2e05; text-decoration:none;">⬅ Back to Home</a>
 
-<div class="grid">
-  <div class="panel" onclick="location.href='BO7%20Tools/loadouts.html'">
-    <h2>Loadouts</h2>
-    <p>A List of Good Loadouts</p>
-  </div>
-  <div class="panel" onclick="location.href='BO7%20Tools/map1ee_steps.html'">
-    <h2>Map 1</h2>
-    <p>Tools to help with Map 1</p>
-  </div>
-  <div class="panel" onclick="location.href='index.html'">
-    <h2>Map 2</h2>
-    <p>Tools to help with Map 2</p>
-  </div>
-  <div class="panel" onclick="location.href='index.html'">
-    <h2>Map 3</h2>
-    <p>Tools to help with Map 3</p>
-  </div>
-  <div class="panel" onclick="location.href='index.html'">
-    <h2>Map 4</h2>
-    <p>Tools to help with Map 4</p>
+<div class="accordion">
+  <div class="accordion-header" onclick="toggleAccordion(this)">⚔ Loadouts</div>
+  <div class="accordion-content">
+    <a href="BO7%20Tools/loadouts.html">All Loadouts</a>
   </div>
 </div>
 
-<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support me on Ko-fi', '#72a4f2', 'X8X818RDQ3');kofiwidget2.draw();</script> 
+<div class="accordion">
+  <div class="accordion-header" onclick="toggleAccordion(this)">🗺 Maps</div>
+  <div class="accordion-content">
+    <a href="BO7%20Tools/map1ee_steps.html">Map 1</a>
+    <a href="index.html">Map 2</a>
+    <a href="index.html">Map 3</a>
+    <a href="index.html">Map 4</a>
+    <!-- Add more maps easily -->
+  </div>
+</div>
+
+<div class="accordion">
+  <div class="accordion-header" onclick="toggleAccordion(this)">📜 Other Tools</div>
+  <div class="accordion-content">
+    <a href="index.html">Weapon Stats</a>
+    <a href="index.html">Strategy Notes</a>
+  </div>
+</div>
+
+<!-- Ko-fi widget wrapped for spacing -->
+<div class="kofi-container">
+  <script src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+  <script>
+    kofiwidget2.init('Support me on Ko-fi', '#72a4f2', 'X8X818RDQ3');
+    kofiwidget2.draw();
+  </script>
+</div>
 
 <footer style="margin-top:auto; padding:1rem; font-size:0.8rem; color:#7a562c;">
   Made with ⚔️ &amp; 🐉 by SnarfM TransformingPanda
 </footer>
+
+<script>
+function toggleAccordion(header) {
+  const content = header.nextElementSibling;
+  const isOpen = content.style.display === "flex";
+  document.querySelectorAll(".accordion-content").forEach(el => el.style.display = "none");
+  if (!isOpen) content.style.display = "flex";
+}
+</script>
 
 </body>
 </html>
