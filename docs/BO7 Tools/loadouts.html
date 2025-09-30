@@ -168,6 +168,9 @@
   .small-btn.ghost{
     background:transparent;
   }
+  .kofi-container {
+    margin-top: 3rem;
+  }
 
   /* responsive */
   @media (max-width:600px){
@@ -188,13 +191,16 @@
       <div id="list" class="list" aria-live="polite"></div>
     </main>
 
-<footer style="margin-top:auto; padding:1rem; font-size:0.8rem; color:#7a562c;">
-  <a href="../bo7.html" style="color:var(--accent); text-decoration:none; margin-left:8px;">← Back</a>
-  <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-  <script type='text/javascript'>
+<div class="kofi-container">
+  <script src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+  <script>
     kofiwidget2.init('Support me on Ko-fi', '#72a4f2', 'X8X818RDQ3');
     kofiwidget2.draw();
-  </script> 
+  </script>
+</div>
+
+<footer style="margin-top:auto; padding:1rem; font-size:0.8rem; color:#7a562c;">
+  <a href="../bo7.html" style="color:var(--accent); text-decoration:none; margin-left:8px;">← Back</a>
   Made with ⚔️ &amp; 🐉 by SnarfM TransformingPanda
 </footer>
   </div>
