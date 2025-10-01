@@ -44,9 +44,8 @@
 
   label { font-weight: bold; }
 
-  input, textarea {
+  input, select {
     font-family: 'MedievalSharp', cursive;
-    width: 100%;
     padding: 0.3rem;
     margin: 0.4rem 0;
     border: 2px solid #f9d65c;
@@ -57,20 +56,20 @@
     background: #2b0036;
     color: #f9d65c;
     border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 8px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
     cursor: pointer;
-    margin: 0.3rem;
+    margin-left: 0.5rem;
   }
 
   button:hover {
     background: #3b0a0a;
   }
 
-  .kofi-container {
-    margin-top: 3rem;
-  }
+  ul { padding-left: 1.2rem; }
+  li { margin-bottom: 0.4rem; }
+  .kofi-container { margin-top: 3rem; }
 </style>
 </head>
 <body>
@@ -80,14 +79,34 @@
 <!-- Adventure Sheet -->
 <div class="sheet">
   <h2>Adventure Sheet</h2>
-  <label>Skill: <input type="number" id="skill" value="10"></label><br>
-  <label>Stamina: <input type="number" id="stamina" value="20"></label><br>
-  <label>Luck: <input type="number" id="luck" value="10"></label><br>
+  <label>
+  Skill: <input type="number" id="skill" value="10">
+  <span id="init-skill">(Initial: 10)</span>
+</label><br>
+<label>
+  Stamina: <input type="number" id="stamina" value="20">
+  <span id="init-stamina">(Initial: 20)</span>
+</label><br>
+<label>
+  Luck: <input type="number" id="luck" value="10">
+  <span id="init-luck">(Initial: 10)</span>
+</label><br>
   <label>Page: <input type="number" id="page" value="1"></label><br>
   <label>Gold: <input type="number" id="gold" value="0"></label><br>
   
   <h3>Inventory</h3>
-  <textarea id="inventory" rows="5" placeholder="Add items here..."></textarea>
+  <ul id="inventoryList"></ul>
+
+  <!-- Dropdown for known items -->
+  <select id="itemSelect">
+    <option value="">-- Select Item --</option>
+  </select>
+  <button onclick="addSelectedItem()">➕ Add</button>
+  <br>
+
+  <!-- Input for custom items -->
+  <input type="text" id="newItem" placeholder="Add custom item...">
+  <button onclick="addNewItem()">➕ Add</button>
 </div>
 
 <!-- Combat Tracker -->
@@ -116,6 +135,100 @@ Made with ⚔️ &amp; 🐉 by SnarfM TransformingPanda
 </footer>
 
 <script>
+  let initialStats = {
+  skill: 10,
+  stamina: 20,
+  luck: 10
+};
+
+// --- Items and Buffs ---
+const items = [
+  { name: "Sword", buffs: {} },
+  { name: "Leather Armor" },
+  { name: "Shield" },
+  { name: "Potion of Fortune", effect: "Restores Luck to Initial +1" },
+  { name: "Map" },
+  { name: "Demon Dagger", buffs: { Sk: +1 } },
+  { name: "Bracelet of Power", buffs: { Sk: +1, St: +2 } },
+  { name: "Chain-mail", buffs: { Sk: +1 } },
+  { name: "Dwarf Shield", buffs: { Sk: +1 } },
+  { name: "Elven Boots", buffs: { Sk: +1, Lu: +1 } },
+  { name: "Tyche Ring", buffs: { Lu: +2 } },
+  { name: "Rune Ring", buffs: { St: +2 } },
+  { name: "Lucky Bones", buffs: { Lu: +2 } },
+  { name: "Helmet", buffs: { Sk: +1, Lu: +1 } },
+  { name: "Venom Sword", buffs: { At: +3 } },
+  { name: "Gauntlets", buffs: { Sk: +1 } },
+  { name: "Dragonfly Pendant", buffs: { Sk: +2, St: +2 } },
+];
+
+// Starting items
+const startingItems = ["Sword", "Leather Armor", "Shield", "Potion of Fortune", "Map"];
+
+// Populate dropdown
+function populateDropdown() {
+  const select = document.getElementById("itemSelect");
+  items.forEach(it => {
+    const opt = document.createElement("option");
+    opt.value = it.name;
+    opt.textContent = it.name;
+    select.appendChild(opt);
+  });
+}
+
+function addInventoryItem(itemName) {
+  const li = document.createElement("li");
+  li.textContent = itemName;
+  const removeBtn = document.createElement("button");
+  removeBtn.textContent = "❌";
+  removeBtn.onclick = () => { li.remove(); saveProgress(); applyItemBuffs(); };
+  li.appendChild(removeBtn);
+  document.getElementById("inventoryList").appendChild(li);
+  applyItemBuffs();
+}
+
+function addSelectedItem() {
+  const select = document.getElementById("itemSelect");
+  if (select.value) {
+    addInventoryItem(select.value);
+    select.value = "";
+  }
+}
+
+function addNewItem() {
+  const newItem = document.getElementById("newItem").value.trim();
+  if (newItem) {
+    addInventoryItem(newItem);
+    document.getElementById("newItem").value = "";
+  }
+}
+
+// --- Buff Application ---
+function applyItemBuffs() {
+  let baseSkill = 10;
+  let baseStam = 20;
+  let baseLuck = 10;
+
+  let totalSkill = baseSkill;
+  let totalStam = baseStam;
+  let totalLuck = baseLuck;
+
+  const inv = Array.from(document.querySelectorAll("#inventoryList li")).map(li => li.firstChild.textContent);
+  inv.forEach(itemName => {
+    const item = items.find(i => i.name === itemName);
+    if (item && item.buffs) {
+      if (item.buffs.Sk) totalSkill += item.buffs.Sk;
+      if (item.buffs.St) totalStam += item.buffs.St;
+      if (item.buffs.Lu) totalLuck += item.buffs.Lu;
+    }
+  });
+
+  document.getElementById("skill").value = totalSkill;
+  document.getElementById("stamina").value = totalStam;
+  document.getElementById("luck").value = totalLuck;
+}
+
+// --- Combat ---
 function rollDice() {
   return Math.floor(Math.random() * 6) + 1;
 }
@@ -147,42 +260,18 @@ function fightRound() {
 
   document.getElementById("stamina").value = playerStam;
   document.getElementById("enemyStamina").value = enemyStam;
-
-  saveProgress();
 }
 
-// --- Save / Load ---
-function saveProgress() {
-  const state = {
-    skill: document.getElementById("skill").value,
-    stamina: document.getElementById("stamina").value,
-    luck: document.getElementById("luck").value,
-    page: document.getElementById("page").value,
-    gold: document.getElementById("gold").value,
-    inventory: document.getElementById("inventory").value
-  };
-  localStorage.setItem("portOfPerilSave", JSON.stringify(state));
-}
-
-function loadProgress() {
-  const saved = localStorage.getItem("portOfPerilSave");
-  if (!saved) return;
-  const state = JSON.parse(saved);
-  document.getElementById("skill").value = state.skill;
-  document.getElementById("stamina").value = state.stamina;
-  document.getElementById("luck").value = state.luck;
-  document.getElementById("page").value = state.page;
-  document.getElementById("gold").value = state.gold;
-  document.getElementById("inventory").value = state.inventory;
-}
-
-// Auto-save on changes
+// --- Init ---
 document.addEventListener("DOMContentLoaded", () => {
-  loadProgress();
-  document.querySelectorAll("input, textarea").forEach(el => {
-    el.addEventListener("input", saveProgress);
+  populateDropdown();
+  
+  if (document.querySelectorAll("#inventoryList li").length === 0) {
+    startingItems.forEach(item => addInventoryItem(item));
+  }
+  
+  applyItemBuffs();
   });
-});
 </script>
 
 </body>
