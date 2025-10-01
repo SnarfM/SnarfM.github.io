@@ -143,11 +143,10 @@ Made with ⚔️ &amp; 🐉 by SnarfM TransformingPanda
 
 // --- Items and Buffs ---
 const items = [
-  { name: "Sword" },
-  { name: "Leather Armor" },
-  { name: "Shield" },
-  { name: "Potion of Fortune", effect: "Restores Luck to Initial +1" },
-  { name: "Map" },
+  //Starting Potions
+  { name: "Potion of Fortune", effect: "Restores Luck to Initial" },
+  { name: "Healing Potion", effect: "Restores Stamina to Initial" },
+
   { name: "Demon Dagger", buffs: { Sk: +1 } },
   { name: "Bracelet of Power", buffs: { Sk: +1, St: +2 } },
   { name: "Chain-mail", buffs: { Sk: +1 } },
@@ -183,7 +182,6 @@ const items = [
   { name: "Green Vial" },
   { name: "Lead ball" },
   { name: "Compass" },
-  { name: "Healing Potion" },
   { name: "Ruby" },
 ];
 
