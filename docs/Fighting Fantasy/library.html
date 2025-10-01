@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fighting Fantasy Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet" />
+<style>
+  body {
+    margin: 0;
+    background: #f3e6c9;
+    font-family: 'MedievalSharp', cursive;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    color: #4b2e05;
+  }
+  h1 { margin: 2rem 0; }
+  .grid {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 900px;
+    width: 90%;
+  }
+  .panel {
+    background: #f9f4e8;
+    border: 3px solid #7a562c;
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 220px;
+    height: 150px;
+    box-shadow: 0 0 12px #a67c00cc;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+  .panel:hover { background-color: #e6d8b7; }
+  .panel h2 { margin: 0 0 0.5rem; }
+  .panel p { font-style: italic; }
+  .kofi-container {
+    margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>Fighting Fantasy Companion</h1>
+
+<div class="grid">
+  <div class="panel" onclick="location.href='books/warlock.html'">
+    <h2>The Warlock of Firetop Mountain</h2>
+    <p>Classic dungeon crawl</p>
+  </div>
+  <div class="panel" onclick="location.href='books/city.html'">
+    <h2>City of Thieves</h2>
+    <p>Navigate the dangerous streets</p>
+  </div>
+  <div class="panel" onclick="location.href='books/deathtrap.html'">
+    <h2>Deathtrap Dungeon</h2>
+    <p>Survive the deadliest game</p>
+  </div>
+</div>
+
+<a href="index.html" style="margin-top:2rem; color:#4b2e05; text-decoration:none;">⬅ Back to Home</a>
+
+<div class="kofi-container">
+  <script src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+  <script>
+    kofiwidget2.init('Support me on Ko-fi', '#72a4f2', 'X8X818RDQ3');
+    kofiwidget2.draw();
+  </script>
+</div>
+
+<footer style="margin-top:auto; padding:1rem; font-size:0.8rem; color:#7a562c;">
+  Made with ⚔️ &amp; 🐉 by SnarfM TransformingPanda
+</footer>
+
+</body>
+</html>
