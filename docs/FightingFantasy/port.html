@@ -136,10 +136,10 @@ function fightRound() {
 
   if (playerAttack > enemyAttack) {
     enemyStam -= 2;
-    document.getElementById("combatLog").textContent = "You hit the enemy! Enemy stamina now " + enemyStam;
+    document.getElementById("combatLog").textContent = "You hit the " + enemyName + "! " + enemyName + " stamina now " + enemyStam;
   } else if (enemyAttack > playerAttack) {
     playerStam -= 2;
-    document.getElementById("combatLog").textContent = "Enemy hits you! Your stamina now " + playerStam;
+    document.getElementById("combatLog").textContent = enemyName +" hits you! Your stamina now " + playerStam;
   } else {
     document.getElementById("combatLog").textContent = "It's a draw this round!";
   }
