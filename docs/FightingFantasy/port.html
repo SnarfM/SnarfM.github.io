@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Port of Peril Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'MedievalSharp', cursive;
+    background: linear-gradient(to bottom right, #3b0a0a, #2b0036, #0d0d0d);
+    color: #f3e6c9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  h1 {
+    color: #f9d65c;
+    text-shadow: 2px 2px #000;
+    margin: 1rem 0;
+  }
+
+  .sheet, .combat {
+    background: #f9f4e8;
+    color: #3b0a0a;
+    border: 3px solid #f9d65c;
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 500px;
+    margin: 1rem 0;
+    box-shadow: 0 0 15px #000;
+  }
+
+  h2 {
+    margin-top: 0;
+    color: #2b0036;
+  }
+
+  label { font-weight: bold; }
+
+  input, textarea {
+    font-family: 'MedievalSharp', cursive;
+    width: 100%;
+    padding: 0.3rem;
+    margin: 0.4rem 0;
+    border: 2px solid #f9d65c;
+    border-radius: 6px;
+  }
+
+  button {
+    background: #2b0036;
+    color: #f9d65c;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0.3rem;
+  }
+
+  button:hover {
+    background: #3b0a0a;
+  }
+
+  footer {
+    margin-top: auto;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<h1>⚔️ Port of Peril ⚔️</h1>
+
+<!-- Adventure Sheet -->
+<div class="sheet">
+  <h2>Adventure Sheet</h2>
+  <label>Skill: <input type="number" id="skill" value="10"></label><br>
+  <label>Stamina: <input type="number" id="stamina" value="20"></label><br>
+  <label>Luck: <input type="number" id="luck" value="10"></label><br>
+  <label>Page: <input type="number" id="page" value="1"></label><br>
+  <label>Gold: <input type="number" id="gold" value="0"></label><br>
+  
+  <h3>Inventory</h3>
+  <textarea id="inventory" rows="5" placeholder="Add items here..."></textarea>
+</div>
+
+<!-- Combat Tracker -->
+<div class="combat">
+  <h2>Combat Tracker</h2>
+  <label>Enemy Name: <input type="text" id="enemyName" placeholder="Goblin"></label><br>
+  <label>Enemy Skill: <input type="number" id="enemySkill" value="6"></label><br>
+  <label>Enemy Stamina: <input type="number" id="enemyStamina" value="6"></label><br>
+
+  <button onclick="fightRound()">Fight Round</button>
+  <p id="combatLog"></p>
+</div>
+
+<a href="../ff_index.html" style="color:#f9d65c; text-decoration:none; font-weight:bold;">⬅ Back to Books</a>
+
+<footer>
+  Made for Fighting Fantasy fans ✨
+</footer>
+
+<script>
+function rollDice() {
+  return Math.floor(Math.random() * 6) + 1;
+}
+
+function fightRound() {
+  let playerSkill = parseInt(document.getElementById("skill").value);
+  let playerStam = parseInt(document.getElementById("stamina").value);
+  let enemySkill = parseInt(document.getElementById("enemySkill").value);
+  let enemyStam = parseInt(document.getElementById("enemyStamina").value);
+
+  if (playerStam <= 0 || enemyStam <= 0) {
+    document.getElementById("combatLog").textContent = "Combat is already over!";
+    return;
+  }
+
+  let playerAttack = playerSkill + rollDice() + rollDice();
+  let enemyAttack = enemySkill + rollDice() + rollDice();
+
+  if (playerAttack > enemyAttack) {
+    enemyStam -= 2;
+    document.getElementById("combatLog").textContent = "You hit the enemy! Enemy stamina now " + enemyStam;
+  } else if (enemyAttack > playerAttack) {
+    playerStam -= 2;
+    document.getElementById("combatLog").textContent = "Enemy hits you! Your stamina now " + playerStam;
+  } else {
+    document.getElementById("combatLog").textContent = "It's a draw this round!";
+  }
+
+  document.getElementById("stamina").value = playerStam;
+  document.getElementById("enemyStamina").value = enemyStam;
+}
+</script>
+
+</body>
+</html>
