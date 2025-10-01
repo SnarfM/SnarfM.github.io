@@ -125,7 +125,7 @@ function fightRound() {
   let playerStam = parseInt(document.getElementById("stamina").value);
   let enemySkill = parseInt(document.getElementById("enemySkill").value);
   let enemyStam = parseInt(document.getElementById("enemyStamina").value);
-  let enemyName = parseInt(document.getElementById("enemyName").value);
+  let enemyName = document.getElementById("enemyName").value || "Enemy";
 
   if (playerStam <= 0 || enemyStam <= 0) {
     document.getElementById("combatLog").textContent = "Combat is already over!";
@@ -137,17 +137,52 @@ function fightRound() {
 
   if (playerAttack > enemyAttack) {
     enemyStam -= 2;
-    document.getElementById("combatLog").textContent = "You hit the " + enemyName + "! " + enemyName + " stamina now " + enemyStam;
+    document.getElementById("combatLog").textContent = `You hit the ${enemyName}! Their stamina is now ${enemyStam}.`;
   } else if (enemyAttack > playerAttack) {
     playerStam -= 2;
-    document.getElementById("combatLog").textContent = enemyName +" hits you! Your stamina now " + playerStam;
+    document.getElementById("combatLog").textContent = `The ${enemyName} hits you! Your stamina is now ${playerStam}.`;
   } else {
     document.getElementById("combatLog").textContent = "It's a draw this round!";
   }
 
   document.getElementById("stamina").value = playerStam;
   document.getElementById("enemyStamina").value = enemyStam;
+
+  saveProgress();
 }
+
+// --- Save / Load ---
+function saveProgress() {
+  const state = {
+    skill: document.getElementById("skill").value,
+    stamina: document.getElementById("stamina").value,
+    luck: document.getElementById("luck").value,
+    page: document.getElementById("page").value,
+    gold: document.getElementById("gold").value,
+    inventory: document.getElementById("inventory").value
+  };
+  localStorage.setItem("portOfPerilSave", JSON.stringify(state));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem("portOfPerilSave");
+  if (!saved) return;
+  const state = JSON.parse(saved);
+  document.getElementById("skill").value = state.skill;
+  document.getElementById("stamina").value = state.stamina;
+  document.getElementById("luck").value = state.luck;
+  document.getElementById("page").value = state.page;
+  document.getElementById("gold").value = state.gold;
+  document.getElementById("inventory").value = state.inventory;
+}
+
+// Auto-save on changes
+document.addEventListener("DOMContentLoaded", () => {
+  loadProgress();
+  document.querySelectorAll("input, textarea").forEach(el => {
+    el.addEventListener("input", saveProgress);
+  });
+});
 </script>
 
 </body>
