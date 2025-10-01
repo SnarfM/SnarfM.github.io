@@ -66,6 +66,21 @@
   button:hover {
     background: #3b0a0a;
   }
+  
+  .remove-btn {
+    background: none;
+    color: #f9d65c;
+    border: none;
+    padding: 0;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+.remove-btn:hover {
+  background: #2b0036; 
+  color: #ff5555;
+}
 
   ul { padding-left: 1.2rem; }
   li { margin-bottom: 0.4rem; }
@@ -143,10 +158,11 @@ Made with ⚔️ &amp; 🐉 by SnarfM TransformingPanda
 
 // --- Items and Buffs ---
 const items = [
-  //Starting Potions
-  { name: "Potion of Fortune", effect: "Restores Luck to Initial" },
-  { name: "Healing Potion", effect: "Restores Stamina to Initial" },
-
+  { name: "Sword", buffs: {} },
+  { name: "Leather Armor" },
+  { name: "Shield" },
+  { name: "Potion of Fortune", effect: "Restores Luck to Initial +1" },
+  { name: "Map" },
   { name: "Demon Dagger", buffs: { Sk: +1 } },
   { name: "Bracelet of Power", buffs: { Sk: +1, St: +2 } },
   { name: "Chain-mail", buffs: { Sk: +1 } },
@@ -158,53 +174,11 @@ const items = [
   { name: "Helmet", buffs: { Sk: +1, Lu: +1 } },
   { name: "Venom Sword", buffs: { At: +3 } },
   { name: "Gauntlets", buffs: { Sk: +1 } },
-  { name: "Bottle of Snake Oil" },
-  { name: "Bottle of Skunk Oil" },  
-  { name: "Rabbit Charm" },
-  { name: "7 Teeth" },
-  { name: "Silver Button" },
-  { name: "Glass Eye" },
-  { name: "Arrowhead" },
-  { name: "3 Stones" },
-  { name: "Jar of Sheep's eyeballs" },
-  { name: "Chalk" },
-  { name: "Nettles" },
-  { name: "Cast-iron pig" },
-  { name: "Paper" },
-  { name: "Stikkle wax" },
-  { name: "Long Knife" },
-  { name: "Fish Hooks" },
-  { name: "Salt" },
-  { name: "Bow" },
-  { name: "6 Arrows" },
-  { name: "Hakasan" },
-  { name: "2 Silver Buttons" },
-  { name: "Green Vial" },
-  { name: "Lead ball" },
-  { name: "Compass" },
-  { name: "Ruby" },
+  { name: "Dragonfly Pendant", buffs: { Sk: +2, St: +2 } },
 ];
 
 // Starting items
-const startingItems = [
-  "Sword",
-  "Leather Armor",
-  "Backpack",
-  "Shield",
-  "Replace this Potion",
-  "Map",
-  "Ball of Twine",
-  "Candle",
-  "Small Brass Bell",
-  "Oil Lantern",
-  "Knife",
-  "Piece of Chalk",
-  "Brass Owl",
-  "Length of Rope",
-  "Bag of Copper Nails",
-  "Animal-skin Water Flask",
-  "Goblet bearing a unicorn-head motif",
-];
+const startingItems = ["Sword", "Leather Armor", "Shield", "Potion of Fortune", "Map"];
 
 // Populate dropdown
 function populateDropdown() {
@@ -222,7 +196,8 @@ function addInventoryItem(itemName) {
   li.textContent = itemName;
   const removeBtn = document.createElement("button");
   removeBtn.textContent = "❌";
-  removeBtn.onclick = () => { li.remove(); saveProgress(); applyItemBuffs(); };
+  removeBtn.classList.add("remove-btn");
+  removeBtn.onclick = () => { li.remove(); applyItemBuffs(); };
   li.appendChild(removeBtn);
   document.getElementById("inventoryList").appendChild(li);
   applyItemBuffs();
