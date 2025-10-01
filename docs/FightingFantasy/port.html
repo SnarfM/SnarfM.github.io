@@ -159,11 +159,10 @@ Made with ⚔️ &amp; 🐉 by SnarfM TransformingPanda
 
 // --- Items and Buffs ---
 const items = [
-  { name: "Sword", buffs: {} },
-  { name: "Leather Armor" },
-  { name: "Shield" },
-  { name: "Potion of Fortune", effect: "Restores Luck to Initial +1" },
-  { name: "Map" },
+  //Starting Potions
+  { name: "Potion of Fortune", effect: "Restores Luck to Initial" },
+  { name: "Healing Potion", effect: "Restores Stamina to Initial" },
+
   { name: "Demon Dagger", buffs: { Sk: +1 } },
   { name: "Bracelet of Power", buffs: { Sk: +1, St: +2 } },
   { name: "Chain-mail", buffs: { Sk: +1 } },
@@ -175,11 +174,53 @@ const items = [
   { name: "Helmet", buffs: { Sk: +1, Lu: +1 } },
   { name: "Venom Sword", buffs: { At: +3 } },
   { name: "Gauntlets", buffs: { Sk: +1 } },
-  { name: "Dragonfly Pendant", buffs: { Sk: +2, St: +2 } },
+  { name: "Bottle of Snake Oil" },
+  { name: "Bottle of Skunk Oil" },  
+  { name: "Rabbit Charm" },
+  { name: "7 Teeth" },
+  { name: "Silver Button" },
+  { name: "Glass Eye" },
+  { name: "Arrowhead" },
+  { name: "3 Stones" },
+  { name: "Jar of Sheep's eyeballs" },
+  { name: "Chalk" },
+  { name: "Nettles" },
+  { name: "Cast-iron pig" },
+  { name: "Paper" },
+  { name: "Stikkle wax" },
+  { name: "Long Knife" },
+  { name: "Fish Hooks" },
+  { name: "Salt" },
+  { name: "Bow" },
+  { name: "6 Arrows" },
+  { name: "Hakasan" },
+  { name: "2 Silver Buttons" },
+  { name: "Green Vial" },
+  { name: "Lead ball" },
+  { name: "Compass" },
+  { name: "Ruby" },
 ];
 
 // Starting items
-const startingItems = ["Sword", "Leather Armor", "Shield", "Potion of Fortune", "Map"];
+const startingItems = [
+  "Sword",
+  "Leather Armor",
+  "Backpack",
+  "Shield",
+  "Replace this Potion",
+  "Map",
+  "Ball of Twine",
+  "Candle",
+  "Small Brass Bell",
+  "Oil Lantern",
+  "Knife",
+  "Piece of Chalk",
+  "Brass Owl",
+  "Length of Rope",
+  "Bag of Copper Nails",
+  "Animal-skin Water Flask",
+  "Goblet bearing a unicorn-head motif",
+];
 
 // Populate dropdown
 function populateDropdown() {
