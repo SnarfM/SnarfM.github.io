@@ -125,6 +125,7 @@ function fightRound() {
   let playerStam = parseInt(document.getElementById("stamina").value);
   let enemySkill = parseInt(document.getElementById("enemySkill").value);
   let enemyStam = parseInt(document.getElementById("enemyStamina").value);
+  let enemyName = parseInt(document.getElementById("enemyName").value);
 
   if (playerStam <= 0 || enemyStam <= 0) {
     document.getElementById("combatLog").textContent = "Combat is already over!";
